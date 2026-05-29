@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # The core app has zero runtime dependencies — nothing to install.
+      - name: Run tests
+        run: npm test
+      - name: Boot smoke test (demo mode)
+        run: |
+          node server/index.js &
+          SERVER=$!
+          sleep 2
+          curl -fsS http://localhost:3000/api/health > /dev/null
+          curl -fsS http://localhost:3000/api/scores > /dev/null
+          kill $SERVER

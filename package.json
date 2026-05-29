@@ -1,0 +1,15 @@
+{
+  "name": "sensi-world-cup-2026",
+  "version": "1.0.0",
+  "description": "Sensi World Cup 2026 — office World Cup prediction app. React prototype frontend + zero-dependency Node backend (live scores, identity/roster, persistence, scoring).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test server/test/*.test.js"
+  },
+  "license": "MIT"
+}

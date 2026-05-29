@@ -1,0 +1,19 @@
+{
+  "name": "sensi-world-cup-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend for the Sensi World Cup 2026 office prediction app: live scores, identity/roster, persistence, scoring. Zero runtime dependencies (Node built-ins only).",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node --test"
+  },
+  "dependencies": {},
+  "optionalDependencies": {
+    "openid-client": "^5.6.5"
+  }
+}
