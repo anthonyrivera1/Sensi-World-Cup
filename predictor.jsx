@@ -79,9 +79,12 @@ function PickTarget({ kind, code, selected, dim, disabled, onClick }) {
 
 function MatchCard({ match, pred, locked, monkey, bracketPick, setOutcome, setScore, setLock }) {
   const isLive = match.status === 'live';
+  const isFinished = match.status === 'finished';
+  const kickedOff = isLive || isFinished;            // picks + scores lock the moment a game starts
   const fromBracket = !!bracketPick;
-  const outcomeLocked = locked || fromBracket;
-  const monkeyFilled = !pred && monkey && !fromBracket;
+  const outcomeLocked = locked || fromBracket || kickedOff;
+  const editLocked = locked || kickedOff;            // blocks score edits, the toggle, and the lock button
+  const monkeyFilled = !pred && monkey && !fromBracket && !kickedOff;
   const monkeyPick = React.useRef(['home', 'draw', 'away'][Math.floor(Math.random() * 3)]);
   const [pulse, setPulse] = React.useState(false);
   const [showScore, setShowScore] = React.useState(!!(pred && pred.score));
@@ -90,10 +93,16 @@ function MatchCard({ match, pred, locked, monkey, bracketPick, setOutcome, setSc
   const score = pred && pred.score;
   const stepScore = score || [0, 0];
 
-  // keep the matchday outcome in sync with the bracket ranking
+  // keep the matchday outcome in sync with the bracket ranking — until kickoff
   React.useEffect(() => {
-    if (fromBracket && !locked && (!pred || pred.pick !== bracketPick)) setOutcome(match.id, bracketPick);
+    if (fromBracket && !locked && !kickedOff && (!pred || pred.pick !== bracketPick)) setOutcome(match.id, bracketPick);
   }, [bracketPick, locked]);
+
+  // once the game is live, finalize the pick the user already made: it can no
+  // longer be changed (the backend enforces the same lock authoritatively).
+  React.useEffect(() => {
+    if (kickedOff && !locked && pred && pred.pick) setLock(match.id);
+  }, [kickedOff]);
 
   // an exact score may never contradict a bracket-locked winner
   const onScore = (id, sc) => {
@@ -108,7 +117,7 @@ function MatchCard({ match, pred, locked, monkey, bracketPick, setOutcome, setSc
   };
 
   function lock() {
-    if (locked) return;
+    if (locked || kickedOff) return;
     if (fromBracket) setOutcome(match.id, bracketPick);
     else if (!pred && monkeyFilled) setOutcome(match.id, monkeyPick.current);
     setLock(match.id);
@@ -154,8 +163,11 @@ function MatchCard({ match, pred, locked, monkey, bracketPick, setOutcome, setSc
 
       <div className="flex items-center justify-between mb-2">
         <span className="text-[10px] uppercase tracking-widest text-white/35 font-bold flex items-center gap-1.5">
-          {outcomeLocked && <Icon name="Lock" size={10} style={{ color: fromBracket && !locked ? 'var(--accent)' : 'var(--pitch)' }} />}
-          {locked ? 'Pick locked' : fromBracket ? 'Set by your bracket' : 'Pick the winner'}
+          {outcomeLocked && <Icon name="Lock" size={10} style={{ color: fromBracket && !locked && !kickedOff ? 'var(--accent)' : 'var(--pitch)' }} />}
+          {locked ? 'Pick locked'
+            : kickedOff ? (isFinished ? 'Locked · full time' : 'Locked · in play')
+            : fromBracket ? 'Set by your bracket'
+            : 'Pick the winner'}
         </span>
         <span className="text-[10px] font-semibold text-white/35">{PTS_OUTCOME} pts</span>
       </div>
@@ -178,18 +190,18 @@ function MatchCard({ match, pred, locked, monkey, bracketPick, setOutcome, setSc
       )}
 
       {/* optional exact score */}
-      {!(locked && !score) && (
-      <button onClick={() => !locked && setShowScore((v) => !v)} disabled={locked}
-        className={`${locked ? '' : 'press'} w-full mt-3 flex items-center gap-2 rounded-xl px-3 py-2 border text-[12px] font-semibold`}
+      {!(editLocked && !score) && (
+      <button onClick={() => !editLocked && setShowScore((v) => !v)} disabled={editLocked}
+        className={`${editLocked ? '' : 'press'} w-full mt-3 flex items-center gap-2 rounded-xl px-3 py-2 border text-[12px] font-semibold`}
         style={{
           background: score ? 'color-mix(in oklab, var(--pitch) 12%, transparent)' : 'rgba(255,255,255,.03)',
           borderColor: score ? 'rgba(16,185,129,.4)' : 'rgba(255,255,255,.1)',
           color: score ? 'var(--pitch)' : 'rgba(255,255,255,.6)',
-          cursor: locked ? 'default' : 'pointer',
+          cursor: editLocked ? 'default' : 'pointer',
           transition: 'background .2s ease, border-color .2s ease, color .2s ease',
         }}>
         <Icon name={score ? 'CircleCheckBig' : showScore ? 'Minus' : 'Plus'} size={14} />
-        {score ? `Exact score${locked ? '' : ' predicted'} · ${score[0]}–${score[1]}` : 'Add exact score'}
+        {score ? `Exact score${editLocked ? '' : ' predicted'} · ${score[0]}–${score[1]}` : 'Add exact score'}
         <span className="ml-auto flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded"
           style={{ background: 'rgba(255,255,255,.08)', color: score ? 'var(--pitch)' : 'var(--accent)' }}>
           <Icon name="Star" size={10} />+{PTS_EXACT} bonus
@@ -202,15 +214,15 @@ function MatchCard({ match, pred, locked, monkey, bracketPick, setOutcome, setSc
           <div className="flex items-center justify-around pt-3 pb-1">
             <div className="flex flex-col items-center gap-1.5">
               <FlagChip code={match.home} size={26} />
-              <Stepper value={stepScore[0]} color="var(--accent)" disabled={locked} onChange={(v) => onScore(match.id, [v, stepScore[1]])} />
+              <Stepper value={stepScore[0]} color="var(--accent)" disabled={editLocked} onChange={(v) => onScore(match.id, [v, stepScore[1]])} />
             </div>
             <span className="text-white/25 font-black text-lg pt-5">–</span>
             <div className="flex flex-col items-center gap-1.5">
               <FlagChip code={match.away} size={26} />
-              <Stepper value={stepScore[1]} color="var(--accent)" disabled={locked} onChange={(v) => onScore(match.id, [stepScore[0], v])} />
+              <Stepper value={stepScore[1]} color="var(--accent)" disabled={editLocked} onChange={(v) => onScore(match.id, [stepScore[0], v])} />
             </div>
           </div>
-          {score && !locked && (
+          {score && !editLocked && (
             <p className="text-[10.5px] text-white/40 text-center pb-1">
               Implies a <span className="font-semibold" style={{ color: 'var(--accent)' }}>
                 {outcomeOf(score) === 'draw' ? 'draw' : (outcomeOf(score) === 'home' ? match.home : match.away) + ' win'}
@@ -229,17 +241,20 @@ function MatchCard({ match, pred, locked, monkey, bracketPick, setOutcome, setSc
         )}
         <button
           onClick={lock}
-          disabled={locked || !ready}
-          className="press ml-auto flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-[12.5px]"
+          disabled={editLocked || !ready}
+          className={`${editLocked || !ready ? '' : 'press'} ml-auto flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-[12.5px]`}
           style={{
-            background: locked ? 'rgba(16,185,129,.18)' : ready ? 'var(--accent)' : 'rgba(255,255,255,.06)',
-            color: locked ? 'var(--pitch)' : ready ? '#06121f' : 'rgba(255,255,255,.35)',
-            boxShadow: !locked && ready ? '0 3px 14px color-mix(in oklab, var(--accent) 55%, transparent)' : 'none',
-            cursor: locked || !ready ? 'default' : 'pointer',
+            background: locked ? 'rgba(16,185,129,.18)' : (kickedOff || !ready) ? 'rgba(255,255,255,.06)' : 'var(--accent)',
+            color: locked ? 'var(--pitch)' : (kickedOff || !ready) ? 'rgba(255,255,255,.4)' : '#06121f',
+            boxShadow: !editLocked && ready ? '0 3px 14px color-mix(in oklab, var(--accent) 55%, transparent)' : 'none',
+            cursor: editLocked || !ready ? 'default' : 'pointer',
             transition: 'background .25s ease, color .25s ease',
           }}>
           <Icon name={locked ? 'CircleCheckBig' : 'Lock'} size={14} />
-          {locked ? 'Locked in' : ready ? 'Lock pick' : 'Pick a winner'}
+          {locked ? 'Locked in'
+            : kickedOff ? (isFinished ? 'Full time' : 'Kicked off')
+            : ready ? 'Lock pick'
+            : 'Pick a winner'}
         </button>
       </div>
     </div>
