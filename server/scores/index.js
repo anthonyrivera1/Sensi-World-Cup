@@ -8,10 +8,13 @@
    On a provider error we serve the last good snapshot if we have one.
    ============================================================ */
 import { config, features } from '../config.js';
+import * as footballData from './providers/footballData.js';
 import * as apiFootball from './providers/apiFootball.js';
 import * as demo from './providers/demo.js';
 
-const provider = features.liveScores ? apiFootball : demo;
+// Pick the live provider by name; fall back to demo until a key is set.
+const REAL = { 'football-data': footballData, 'api-football': apiFootball };
+const provider = features.liveScores ? (REAL[config.scores.provider] || footballData) : demo;
 
 let cache = null;       // { matches, updatedAt, mode }
 let inflight = null;    // de-dupe concurrent refreshes

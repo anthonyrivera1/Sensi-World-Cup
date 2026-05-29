@@ -13,7 +13,7 @@ import { codeFor, normalizeGroup, normalizeStatus, kickoffET } from '../normaliz
 
 // Fetch both currently-live fixtures and today's scheduled ones, merge.
 async function fetchFixtures() {
-  const { baseUrl, apiKey, league, season } = config.scores;
+  const { apiFootballBase: baseUrl, apiKey, league, season } = config.scores;
   const headers = { 'x-apisports-key': apiKey, Accept: 'application/json' };
 
   // today (any status) so upcoming/finished matches also render
