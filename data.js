@@ -10,11 +10,11 @@ const TEAMS = {
   // GROUP A
   MEX: { name: 'Mexico',        colors: ['#006847', '#ffffff', '#ce1126'], dir: 'v' },
   RSA: { name: 'South Africa',  colors: ['#007a4d', '#ffb612', '#de3831'], dir: 'h' },
-  KOR: { name: 'Korea Rep.',    colors: ['#ffffff', '#003478', '#c60c30'], dir: 'h' },
+  KOR: { name: 'South Korea',    colors: ['#ffffff', '#003478', '#c60c30'], dir: 'h' },
   CZE: { name: 'Czechia',       colors: ['#11457e', '#ffffff', '#d7141a'], dir: 'h' },
   // GROUP B
   CAN: { name: 'Canada',        colors: ['#d52b1e', '#ffffff', '#d52b1e'], dir: 'v' },
-  BIH: { name: 'Bosnia & H.',   colors: ['#002395', '#fecb00', '#ffffff'], dir: 'd' },
+  BIH: { name: 'Bosnia and Herzegovina',   colors: ['#002395', '#fecb00', '#ffffff'], dir: 'd' },
   QAT: { name: 'Qatar',         colors: ['#8a1538', '#ffffff'],            dir: 'v' },
   SUI: { name: 'Switzerland',   colors: ['#d52b1e', '#ffffff', '#d52b1e'], dir: 'h' },
   // GROUP C
@@ -23,14 +23,14 @@ const TEAMS = {
   HAI: { name: 'Haiti',         colors: ['#00209f', '#d21034'],            dir: 'h' },
   SCO: { name: 'Scotland',      colors: ['#0065bd', '#ffffff'],            dir: 'd' },
   // GROUP D
-  USA: { name: 'USA',           colors: ['#3c3b6e', '#ffffff', '#b22234'], dir: 'v' },
+  USA: { name: 'United States',           colors: ['#3c3b6e', '#ffffff', '#b22234'], dir: 'v' },
   PAR: { name: 'Paraguay',      colors: ['#d52b1e', '#ffffff', '#0038a8'], dir: 'h' },
   AUS: { name: 'Australia',     colors: ['#00008b', '#ffffff', '#e4002b'], dir: 'd' },
-  TUR: { name: 'Türkiye',       colors: ['#e30a17', '#ffffff'],            dir: 'dot' },
+  TUR: { name: 'Turkey',       colors: ['#e30a17', '#ffffff'],            dir: 'dot' },
   // GROUP E
   GER: { name: 'Germany',       colors: ['#000000', '#dd0000', '#ffce00'], dir: 'h' },
   CUW: { name: 'Curaçao',       colors: ['#002b7f', '#f9d90f', '#ffffff'], dir: 'h' },
-  CIV: { name: "Côte d'Ivoire", colors: ['#f77f00', '#ffffff', '#009e60'], dir: 'v' },
+  CIV: { name: 'Ivory Coast', colors: ['#f77f00', '#ffffff', '#009e60'], dir: 'v' },
   ECU: { name: 'Ecuador',       colors: ['#ffd100', '#0072c6', '#ef3340'], dir: 'h' },
   // GROUP F
   NED: { name: 'Netherlands',   colors: ['#ae1c28', '#ffffff', '#21468b'], dir: 'h' },
@@ -40,11 +40,11 @@ const TEAMS = {
   // GROUP G
   BEL: { name: 'Belgium',       colors: ['#000000', '#fdda24', '#ef3340'], dir: 'v' },
   EGY: { name: 'Egypt',         colors: ['#ce1126', '#ffffff', '#000000'], dir: 'h' },
-  IRN: { name: 'IR Iran',       colors: ['#239f40', '#ffffff', '#da0000'], dir: 'h' },
+  IRN: { name: 'Iran',       colors: ['#239f40', '#ffffff', '#da0000'], dir: 'h' },
   NZL: { name: 'New Zealand',   colors: ['#00247d', '#cc142b', '#ffffff'], dir: 'd' },
   // GROUP H
   ESP: { name: 'Spain',         colors: ['#aa151b', '#f1bf00', '#aa151b'], dir: 'h' },
-  CPV: { name: 'Cabo Verde',    colors: ['#003893', '#ffffff', '#cf2027'], dir: 'h' },
+  CPV: { name: 'Cape Verde',    colors: ['#003893', '#ffffff', '#cf2027'], dir: 'h' },
   KSA: { name: 'Saudi Arabia',  colors: ['#006c35', '#ffffff'],            dir: 'v' },
   URU: { name: 'Uruguay',       colors: ['#0038a8', '#ffffff', '#fcd116'], dir: 'd' },
   // GROUP I
@@ -59,7 +59,7 @@ const TEAMS = {
   JOR: { name: 'Jordan',        colors: ['#000000', '#ffffff', '#007a3d'], dir: 'h' },
   // GROUP K
   POR: { name: 'Portugal',      colors: ['#006600', '#ff0000'],            dir: 'v' },
-  COD: { name: 'Congo DR',      colors: ['#007fff', '#f7d618', '#ce1021'], dir: 'd' },
+  COD: { name: 'DR Congo',      colors: ['#007fff', '#f7d618', '#ce1021'], dir: 'd' },
   UZB: { name: 'Uzbekistan',    colors: ['#1eb53a', '#ffffff', '#0099b5'], dir: 'h' },
   COL: { name: 'Colombia',      colors: ['#fcd116', '#003893', '#ce1126'], dir: 'h' },
   // GROUP L

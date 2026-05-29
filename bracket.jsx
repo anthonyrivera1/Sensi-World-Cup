@@ -59,7 +59,7 @@ function GroupCard({ letter, codes, ranking, onOpen }) {
                     style={{ background: 'var(--pitch)', color: '#06121f' }}>{pos + 1}</span>
                 )}
               </span>
-              <span className="text-[11px] font-semibold text-white/70">{code}</span>
+              <span className="text-[11px] font-semibold text-white/70 leading-tight">{window.teamName(code)}</span>
             </div>
           );
         })}
@@ -106,9 +106,8 @@ function RankingPanel({ letter, codes, ranking, onChange, onClose, onNext, hasNe
       }}
     >
       <FlagChip code={code} size={32} />
-      <span className="text-left leading-tight">
-        <span className="block text-[13px] font-bold text-white">{code}</span>
-        <span className="block text-[10px] text-white/45 -mt-0.5">{window.TEAMS[code].name}</span>
+      <span className="text-left leading-tight min-w-0">
+        <span className="block text-[13px] font-bold text-white">{window.TEAMS[code].name}</span>
       </span>
       <Icon name={ctx === 'pool' ? 'Plus' : 'X'} size={15} className="ml-auto text-white/35" />
     </button>
@@ -269,8 +268,8 @@ function ThirdPlaceAutomator({ rankings }) {
                 <span className="text-[10px] font-black w-4 text-center"
                   style={{ color: isIn ? 'var(--pitch)' : 'rgba(255,255,255,.3)' }}>{i + 1}</span>
                 <FlagChip code={t.code} size={26} />
-                <div className="leading-tight">
-                  <div className="text-[12px] font-bold text-white">{t.code}</div>
+                <div className="leading-tight min-w-0">
+                  <div className="text-[12px] font-bold text-white truncate" title={window.teamName(t.code)}>{window.teamName(t.code)}</div>
                   <div className="text-[9px] text-white/40 -mt-0.5">3rd · Grp {t.g}</div>
                 </div>
                 {isIn && <Icon name="Check" size={13} className="ml-auto" style={{ color: 'var(--pitch)' }} />}

@@ -66,11 +66,11 @@ function KoSlot({ code, label, isWinner, decided, clickable, onClick }) {
   }
   return (
     <button onClick={clickable ? onClick : undefined}
-      className={`${clickable ? 'press' : ''} w-full flex items-center gap-2 px-2.5 h-[28px] text-left`}
+      className={`${clickable ? 'press' : ''} w-full flex items-center gap-2 px-2.5 h-[28px] text-left min-w-0`}
       style={{ cursor: clickable ? 'pointer' : 'default', opacity: decided && !isWinner ? 0.42 : 1, transition: 'opacity .2s ease' }}>
       <FlagChip code={code} size={18} selected={isWinner} />
-      <span className="text-[12px] font-bold" style={{ color: isWinner ? 'var(--pitch)' : '#fff' }}>{code}</span>
-      {isWinner && <Icon name="Check" size={12} className="ml-auto" style={{ color: 'var(--pitch)' }} />}
+      <span className="text-[12px] font-bold truncate" title={window.teamName(code)} style={{ color: isWinner ? 'var(--pitch)' : '#fff' }}>{window.teamName(code)}</span>
+      {isWinner && <Icon name="Check" size={12} className="ml-auto shrink-0" style={{ color: 'var(--pitch)' }} />}
     </button>
   );
 }

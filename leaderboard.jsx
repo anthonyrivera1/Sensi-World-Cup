@@ -75,7 +75,7 @@ function PlayerRow({ player, rank, expanded, onToggle }) {
               <span className="text-[11px] text-white/40 font-semibold">Champion</span>
               <span className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/5">
                 <FlagChip code={player.champ} size={20} />
-                <span className="text-[12px] font-bold text-white">{player.champ}</span>
+                <span className="text-[12px] font-bold text-white">{window.teamName(player.champ)}</span>
               </span>
             </div>
             <div className="flex items-center gap-2">

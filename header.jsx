@@ -40,7 +40,7 @@ function LivePitch({ matches }) {
           <div className="flex items-center gap-3">
             <div className="flex flex-col items-center gap-1">
               <FlagChip code={liveMatch.home} size={30} />
-              <span className="text-[11px] font-bold text-white">{liveMatch.home}</span>
+              <span className="text-[11px] font-bold text-white max-w-[76px] truncate text-center" title={window.teamName(liveMatch.home)}>{window.teamName(liveMatch.home)}</span>
             </div>
             <div className="text-center">
               <div className="text-2xl font-black text-white tabular-nums leading-none">{liveMatch.score[0]}–{liveMatch.score[1]}</div>
@@ -50,7 +50,7 @@ function LivePitch({ matches }) {
             </div>
             <div className="flex flex-col items-center gap-1">
               <FlagChip code={liveMatch.away} size={30} />
-              <span className="text-[11px] font-bold text-white">{liveMatch.away}</span>
+              <span className="text-[11px] font-bold text-white max-w-[76px] truncate text-center" title={window.teamName(liveMatch.away)}>{window.teamName(liveMatch.away)}</span>
             </div>
           </div>
 

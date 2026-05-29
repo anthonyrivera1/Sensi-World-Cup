@@ -189,6 +189,11 @@ function Segmented({ options, value, onChange, className = '' }) {
   );
 }
 
+/* full English country name for a 3-letter team code (falls back to the code) */
+function teamName(code) {
+  return (window.TEAMS && window.TEAMS[code] && window.TEAMS[code].name) || code;
+}
+
 Object.assign(window, {
-  Icon, FlagChip, ProgressRing, GlassCard, Avatar, MomentumIndicator, StatusDot, Segmented, InfoPopover,
+  Icon, FlagChip, ProgressRing, GlassCard, Avatar, MomentumIndicator, StatusDot, Segmented, InfoPopover, teamName,
 });

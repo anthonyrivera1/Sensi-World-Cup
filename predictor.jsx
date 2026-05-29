@@ -70,7 +70,7 @@ function PickTarget({ kind, code, selected, dim, disabled, onClick }) {
       ) : (
         <>
           <FlagChip code={code} size={40} selected={selected} />
-          <span className="text-[12px] font-bold text-white">{code}</span>
+          <span className="text-[12px] font-bold text-white text-center leading-tight">{window.teamName(code)}</span>
         </>
       )}
     </button>
